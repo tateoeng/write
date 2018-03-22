@@ -2,17 +2,18 @@
 simple "blogging" platform i use locally to journal my to-dos and miscellaneous thoughts.
 
 # installation
-install markdown.pl in your cgi-bin. make sure SSIs and PHP are enabled and that index.shtml is recognized as a homepage.
+install markdown.pl in your cgi-bin. also, mathjax should be on your server. make sure SSIs and PHP are enabled and that index.shtml is recognized as a homepage.
 
-copy the css file to wherever you put your css files.
+copy the css file to wherever you put your css files. or use your own css file. whatever.
 
 ### in shim.php (both shims!)
 - line 7: change markdown class, if desired
 - line 9: change the time zone
 - line 12: change URL as appropriate
+- line 24: point to the mathjax installation
 - line 25: point to the location of your css file
 
-determine the root directory of your blog from the outside and from your side. copy "0000" directory and contents to the local root directory where your blog will be.
+determine the root directory of your blog from the outside and from your side. copy the 0000 directory and contents to the local root directory where your blog will be.
 
 update the three variables at the top of the script called "write," then move this script to your path. run the script from the command line.
 
