@@ -1,5 +1,5 @@
 # write
-simple "blogging" platform i use locally to journal my to-dos and miscellaneous thoughts.
+simple "blogging" engine i use locally to journal my to-dos and miscellaneous thoughts.
 
 # installation
 install markdown.pl in your cgi-bin. also, mathjax should be on your server. make sure SSIs and PHP are enabled and that index.shtml is recognized as a homepage.
