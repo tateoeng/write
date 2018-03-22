@@ -1,0 +1,51 @@
+#!/bin/bash
+echo
+export webaddy=http://example.com/URL/of/blog/root/directory
+export author="Mr. Your Name, Esq."
+export journal=/path/to/blog/root/directory
+
+# get date
+export y=`date +%Y`
+export m=`date +%m`
+export d=`date +%d`
+
+# is today the first journal entry of the year?
+# does the year folder not exist? if yes, then make it.
+if [ ! -e $journal/$y ]
+  then echo "today's year, month and day directories do not exist; making them"
+    mkdir $journal/$y
+    mkdir $journal/$y/$m
+    export ly=$(($y-1))
+    export lm=`ls -1 $journal/$ly | tail -n 1`
+    export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
+# is today the first journal entry of the month?
+elif [ ! -e $journal/$y/$m ]
+  then echo "today's month and day directories do not exist; making them"
+    mkdir $journal/$y/$m
+    export ly=$y
+    export lm=`ls -1 $journal/$ly | tail -n 2 | head -n 1`
+    export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
+# or are you just blogging for the first time today?
+else
+  echo "today's directory does not exist; making it"
+  export ly=$y
+  export lm=$m
+  export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
+  echo $y/$m/$d $ly/$lm/$ld
+fi
+cp -r $journal/$ly/$lm/$ld $journal/$y/$m/$d
+
+journal=$journal/$y/$m/$d
+
+# update dates at head of index.md
+echo
+echo "updating header"
+n=`wc -l $journal/index.md | cut -d ' ' -f 1`
+am=`date +%b`
+ad=`date +%`
+date +'# [%d %b %Y %a]('$webaddy'/%Y/%m/%d)' > tmp
+echo '###### '$author >> tmp
+tail -n $(($n-2)) $journal/index.md >> tmp
+mv tmp index.md
+
+# update archive link summaries
