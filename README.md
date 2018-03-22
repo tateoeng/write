@@ -22,5 +22,3 @@ edit the index.md file in the directory tree corresponding to today's date. for 
 - specify desired editor; open the new index.md file in the specified editor.
 - generate a link list of archived posts; link to archive index
 - fix the "both shims" issue with a "proper" "installer"
-
-# fork early, fork often
