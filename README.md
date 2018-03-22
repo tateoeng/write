@@ -8,6 +8,7 @@ copy the css file to wherever you put your css files.
 
 ### in shim.php (both shims!)
 - line 7: change markdown class, if desired
+- line 9: change the time zone
 - line 12: change URL as appropriate
 - line 25: point to the location of your css file
 
@@ -20,7 +21,6 @@ edit the index.md file in the directory tree corresponding to today's date. for 
 # to-dos
 - specify desired editor; open the new index.md file in the specified editor.
 - generate a link list of archived posts; link to archive index
-- fix the "both shims" issue
-- make a proper "installer"
+- fix the "both shims" issue with a "proper" "installer"
 
 # fork early, fork often
