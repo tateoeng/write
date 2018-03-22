@@ -46,6 +46,6 @@ ad=`date +%`
 date +'# [%d %b %Y %a]('$webaddy'/%Y/%m/%d)' > tmp
 echo '###### '$author >> tmp
 tail -n $(($n-2)) $journal/index.md >> tmp
-mv tmp index.md
+mv tmp $journal/index.md
 
 # update archive link summaries
