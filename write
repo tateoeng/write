@@ -1,8 +1,8 @@
 #!/bin/bash
 echo
-export webaddy=http://example.com/URL/of/blog/root/directory
-export author="Mr. Your Name, Esq."
-export journal=/path/to/blog/root/directory
+export webaddy=http://localhost
+export author="Msr. Your Name, Esq."
+export journal=/absolute/path/to/journal
 
 # get date
 export y=`date +%Y`
