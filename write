@@ -3,6 +3,7 @@ echo
 export webaddy=http://localhost
 export author="Msr. Your Name, Esq."
 export journal=/absolute/path/to/journal
+export editor=/absolute/path/to/text/editor.exe
 
 # get date
 export y=`date +%Y`
@@ -13,27 +14,37 @@ export d=`date +%d`
 # does the year folder not exist? if yes, then make it.
 if [ ! -e $journal/$y ]
   then echo "today's year, month and day directories do not exist; making them"
-    mkdir $journal/$y
-    mkdir $journal/$y/$m
-    export ly=$(($y-1))
-    export lm=`ls -1 $journal/$ly | tail -n 1`
-    export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
+  mkdir $journal/$y
+  mkdir $journal/$y/$m
+  mkdir $journal/$y/$m/$d
+  export ly=$(($y-1))
+  export lm=`ls -1 $journal/$ly | tail -n 1`
+  export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
+  echo $journal/$ly/$lm/$ld -> $journal/$y/$m/$d
+  cp -r $journal/$ly/$lm/$ld/* $journal/$y/$m/$d/.
 # is today the first journal entry of the month?
 elif [ ! -e $journal/$y/$m ]
   then echo "today's month and day directories do not exist; making them"
-    mkdir $journal/$y/$m
-    export ly=$y
-    export lm=`ls -1 $journal/$ly | tail -n 2 | head -n 1`
-    export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
+  mkdir $journal/$y/$m
+  mkdir $journal/$y/$m/$d
+  export ly=$y
+  export lm=`ls -1 $journal/$ly | tail -n 2 | head -n 1`
+  export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
+  echo $journal/$ly/$lm/$ld -> $journal/$y/$m/$d
+  cp -r $journal/$ly/$lm/$ld/* $journal/$y/$m/$d/.
 # or are you just blogging for the first time today?
-else
-  echo "today's directory does not exist; making it"
+elif [ ! -e $journal/$y/$m/$d ]
+  then echo "today's directory does not exist; making it"
+  mkdir $journal/$y/$m/$d
   export ly=$y
   export lm=$m
   export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
-  echo $y/$m/$d $ly/$lm/$ld
+  echo $journal/$ly/$lm/$ld -> $journal/$y/$m/$d
+  cp -r $journal/$ly/$lm/$ld/* $journal/$y/$m/$d/.
+else
+  echo "today's entry exists"
+  echo $y/$m/$d
 fi
-cp -r $journal/$ly/$lm/$ld $journal/$y/$m/$d
 
 journal=$journal/$y/$m/$d
 
@@ -47,5 +58,7 @@ date +'# [%d %b %Y %a]('$webaddy'/%Y/%m/%d)' > tmp
 echo '###### '$author >> tmp
 tail -n $(($n-2)) $journal/index.md >> tmp
 mv tmp $journal/index.md
+pushd $journal
+atom index.md &
 
 # update archive link summaries
