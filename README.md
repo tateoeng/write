@@ -14,6 +14,7 @@ git clone https://github.com/tateoeng/write.git
 export webaddy=http://localhost
 export author="Msr. Your Name, Esq."
 export journal=/absolute/path/to/journal
+export editor=/absolute/path/to/editor.exe
 </pre>
 - back at the command line
 - copy journal/ and all *.* to root directory where you want your installation; then
@@ -26,6 +27,5 @@ chmod 500 write
 - edit %installroot%/journal/YYYY/MM/DD/index.md to edit the content
 
 # to-dos
-- specify desired editor; open the new index.md file in the specified editor.
 - generate a link list of archived posts; link to archive index
 - fix the "both shims" issue with a "proper" "installer"
