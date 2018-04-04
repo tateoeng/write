@@ -2,7 +2,7 @@
 echo
 export webaddy=http://localhost
 export author="Msr. Your Name, Esq."
-export journal=/absolute/path/to/journal
+export journal=/absolute/path/to/your/journal
 export editor=/absolute/path/to/text/editor.exe
 
 # get date
@@ -15,13 +15,14 @@ export d=`date +%d`
 if [ ! -e $journal/$y ]
   then echo "today's year, month and day directories do not exist; making them"
   mkdir $journal/$y
-  mkdir $journal/$y/$m
-  mkdir $journal/$y/$m/$d
   export ly=$(($y-1))
   export lm=`ls -1 $journal/$ly | tail -n 1`
+  mkdir $journal/$y/$m
   export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
-  echo $journal/$ly/$lm/$ld -> $journal/$y/$m/$d
+  mkdir $journal/$y/$m/$d
   cp -r $journal/$ly/$lm/$ld/* $journal/$y/$m/$d/.
+  echo old: $journal/$ly/$lm/$ld
+  echo new: $journal/$y/$m/$d
 # is today the first journal entry of the month?
 elif [ ! -e $journal/$y/$m ]
   then echo "today's month and day directories do not exist; making them"
@@ -30,35 +31,52 @@ elif [ ! -e $journal/$y/$m ]
   export ly=$y
   export lm=`ls -1 $journal/$ly | tail -n 2 | head -n 1`
   export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
-  echo $journal/$ly/$lm/$ld -> $journal/$y/$m/$d
   cp -r $journal/$ly/$lm/$ld/* $journal/$y/$m/$d/.
+  echo old: $journal/$ly/$lm/$ld
+  echo new: $journal/$y/$m/$d
 # or are you just blogging for the first time today?
 elif [ ! -e $journal/$y/$m/$d ]
   then echo "today's directory does not exist; making it"
-  mkdir $journal/$y/$m/$d
   export ly=$y
   export lm=$m
   export ld=`ls -1 $journal/$ly/$lm | tail -n 1`
-  echo $journal/$ly/$lm/$ld -> $journal/$y/$m/$d
+  mkdir $journal/$y/$m/$d
   cp -r $journal/$ly/$lm/$ld/* $journal/$y/$m/$d/.
+  echo old: $journal/$ly/$lm/$ld
+  echo new: $journal/$y/$m/$d
 else
   echo "today's entry exists"
-  echo $y/$m/$d
+  echo now: $journal/$y/$m/$d
 fi
-
-journal=$journal/$y/$m/$d
 
 # update dates at head of index.md
 echo
 echo "updating header"
-n=`wc -l $journal/index.md | cut -d ' ' -f 1`
+n=`wc -l $journal/$y/$m/$d/index.md | cut -d ' ' -f 1`
 am=`date +%b`
 ad=`date +%`
-date +'# [%d %b %Y %a]('$webaddy'/%Y/%m/%d)' > tmp
+date +'# [%d %b %Y %a]('$webaddy'/journal/%Y/%m/%d)' > tmp
 echo '###### '$author >> tmp
-tail -n $(($n-2)) $journal/index.md >> tmp
-mv tmp $journal/index.md
-pushd $journal
-atom index.md &
+tail -n $(($n-2)) $journal/$y/$m/$d/index.md >> tmp
+mv tmp $journal/$y/$m/$d/index.md
+echo
 
 # update archive link summaries
+
+echo moving to root of journal...
+pushd $journal
+echo
+
+rm ../archive.md
+echo generating archive
+for j in `find . -name index.md`; do
+i=`pwd`
+j=`echo $j | tail -c +2`
+k=`echo $j | tail -c +2 | head -c +10`
+l=`echo $j | head -c +12`index.shtml
+echo \- \[$k\]\($webaddy/journal$l\) >> ../archive.md
+done
+echo
+
+echo exiting journal directory
+popd
