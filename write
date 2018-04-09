@@ -1,9 +1,8 @@
 #!/bin/bash
 echo
 export webaddy=http://localhost
-export author="Msr. Your Name, Esq."
-export journal=/absolute/path/to/your/journal
-export editor=/absolute/path/to/text/editor.exe
+export author="Your Name"
+export journal=/absolute/path/to/journal
 
 # get date
 export y=`date +%Y`
@@ -67,14 +66,19 @@ echo moving to root of journal...
 pushd $journal
 echo
 
-rm ../archive.md
 echo generating archive
+echo > ../archive.md
+echo '---' >> ../archive.md
+echo >> ../archive.md
+echo '## archive' >> ../archive.md
+echo >> ../archive.md
+echo '//' >> ../archive.md
 for j in `find . -name index.md`; do
 i=`pwd`
 j=`echo $j | tail -c +2`
 k=`echo $j | tail -c +2 | head -c +10`
 l=`echo $j | head -c +12`index.shtml
-echo \- \[$k\]\($webaddy/journal$l\) >> ../archive.md
+echo \[$k\]\($webaddy/journal$l\)' //' >> ../archive.md
 done
 echo
 

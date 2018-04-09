@@ -18,7 +18,11 @@ $y    .= '/' . $m . '/' . $d;
 $p    = 'http://localhost/journal/' . $y . '/index.md' ;
 $text = file_get_contents($p);
 
+$a    = 'http://localhost/' . 'archive.md' ;
+$text2 = file_get_contents($a);
+
 $html = Markdown::defaultTransform($text);
+$html2 = Markdown::defaultTransform($text2);
 
 ?>
 <!DOCTYPE html>
@@ -27,7 +31,7 @@ $html = Markdown::defaultTransform($text);
         <title></title>
 	<script type="text/x-mathjax-config">
 	  MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}});</script>
-	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML-full"></script>
+	<script type="text/javascript" src="../../../../MathJax/MathJax.js?config=TeX-AMS_HTML-full"></script>
 	<link rel="stylesheet" type="text/css" href="http://localhost/style.css" /></head>
     <body>
 	<div id="content">
